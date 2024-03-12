@@ -1,0 +1,24 @@
+query($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    issues(last: 100, states: CLOSED, labels: ["bug"]) {
+      nodes {
+        url
+        createdAt
+        closedAt
+        timelineItems(first: 100) {
+          nodes {
+            ... on ClosedEvent {
+              closer {
+                ... on PullRequest {
+                  number
+                  title
+                  url
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
